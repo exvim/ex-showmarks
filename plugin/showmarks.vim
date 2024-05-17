@@ -92,13 +92,13 @@ let loaded_showmarks = 1
 
 " Bail if Vim isn't compiled with signs support.
 if has( "signs" ) == 0
-    " ADD(jwu): only show the error in gui version { 
+    " ADD(jwu): only show the error in gui version {
 	if has("gui_running")
 		echohl ErrorMsg
 		echo "ShowMarks requires Vim to have +signs support."
 		echohl None
 	endif
-    " } ADD(jwu) end 
+    " } ADD(jwu) end
 	finish
 endif
 
@@ -123,10 +123,10 @@ com! -nargs=0 ShowMarksToggle    :call <sid>ShowMarksToggle()
 com! -nargs=0 ShowMarksOn        :call <sid>ShowMarksOn()
 com! -nargs=0 ShowMarksClearMark :call <sid>ShowMarksClearMark()
 com! -nargs=0 ShowMarksClearAll  :call <sid>ShowMarksClearAll()
-" MODIFY(jwu) { 
+" MODIFY(jwu) {
 " com! -nargs=0 ShowMarksPlaceMark :call <sid>ShowMarksPlaceMark()
 com! -nargs=0 ShowMarksPlaceMark :call <sid>ShowMarksPlaceMark('')
-" } MODIFY(jwu) end 
+" } MODIFY(jwu) end
 
 " Mappings (NOTE: Leave the '|'s immediately following the '<cr>' so the mapping does not contain any trailing spaces!)
 if !hasmapto( '<Plug>ShowmarksShowMarksToggle' ) | map <silent> <unique> <leader>mt :ShowMarksToggle<cr>|    endif
@@ -135,14 +135,14 @@ if !hasmapto( '<Plug>ShowmarksClearMark'       ) | map <silent> <unique> <leader
 if !hasmapto( '<Plug>ShowmarksClearAll'        ) | map <silent> <unique> <leader>ma :ShowMarksClearAll<cr>|  endif
 if !hasmapto( '<Plug>ShowmarksPlaceMark'       ) | map <silent> <unique> <leader>mm :ShowMarksPlaceMark<cr>| endif
 
-" MODIFY(jwu) { 
+" MODIFY(jwu) {
 noremap <unique> <script> \sm m
 " noremap <silent> m :exe 'norm \sm'.nr2char(getchar())<bar>call <sid>ShowMarks()<CR>
-" NOTE: use nnoremap to fix conlict with snipMate. when use snipMate, when you input m, it will be ma. 
+" NOTE: use nnoremap to fix conlict with snipMate. when use snipMate, when you input m, it will be ma.
 nnoremap <unique> <silent> m :call <sid>ShowMarksPlaceMark( nr2char(getchar()) )<CR>
-" } MODIFY(jwu) end 
+" } MODIFY(jwu) end
 
-" DISABLE(jwu) { 
+" DISABLE(jwu) {
 " AutoCommands: Only if ShowMarks is enabled
 " if g:showmarks_enable == 1
 " 	aug ShowMarks
@@ -150,7 +150,7 @@ nnoremap <unique> <silent> m :call <sid>ShowMarksPlaceMark( nr2char(getchar()) )
 " 		autocmd CursorHold * call s:ShowMarks()
 " 	aug END
 " endif
-" } DISABLE(jwu) end 
+" } DISABLE(jwu) end
 
 " Highlighting: Setup some nice colours to show the mark positions.
 hi default ShowMarksHLl ctermfg=darkblue ctermbg=blue cterm=bold guifg=blue guibg=lightblue gui=bold
@@ -346,21 +346,21 @@ fun! s:ShowMarksToggle()
 	if g:showmarks_enable == 0
 		let g:showmarks_enable = 1
 		call <sid>ShowMarks()
-        " DISABLE(jwu) { 
+        " DISABLE(jwu) {
 		" aug ShowMarks
 		" 	au!
 		" 	autocmd CursorHold * call s:ShowMarks()
 		" aug END
-        " } DISABLE(jwu) end 
+        " } DISABLE(jwu) end
 	else
 		let g:showmarks_enable = 0
 		call <sid>ShowMarksHideAll()
-        " DISABLE(jwu) { 
+        " DISABLE(jwu) {
 		" aug ShowMarks
 		" 	au!
 		" 	autocmd BufEnter * call s:ShowMarksHideAll()
 		" aug END
-        " } DISABLE(jwu) end 
+        " } DISABLE(jwu) end
 	endif
 endf
 
@@ -499,10 +499,10 @@ endf
 " of marks so the user doesn't have to remember which marks are placed or not.
 " Hidden marks are considered to be unplaced.
 " Only marks a-z are supported.
-" MODIFY(jwu) { 
+" MODIFY(jwu) {
 " fun! s:ShowMarksPlaceMark()
 fun! s:ShowMarksPlaceMark(mark_name)
-" } MODIFY(jwu) end 
+" } MODIFY(jwu) end
 	" Find the first, next, and last [a-z] mark in showmarks_include (i.e.
 	" priority order), so we know where to "wrap".
 	let first_alpha_mark = -1
@@ -557,10 +557,10 @@ fun! s:ShowMarksPlaceMark(mark_name)
 		let b:previous_auto_mark = next_mark
 		exe 'mark '.c
 	else
-		" ADD(jwu) { 
+		" ADD(jwu) {
 		let do_mark = 1
 		if a:mark_name =~# '[a-z]' " only lowercase marks can toggle use
-			let mark_line = s:GetMarkLine("'".a:mark_name) 
+			let mark_line = s:GetMarkLine("'".a:mark_name)
 			if mark_line != 0 && mark_line == line('.') " if this mark been used and same as current line
 				let do_mark = 0
 			endif
@@ -570,7 +570,7 @@ fun! s:ShowMarksPlaceMark(mark_name)
 		if do_mark
 			silent exe 'norm \sm'.a:mark_name
 		endif
-		" } ADD(jwu) end 
+		" } ADD(jwu) end
 	endif
 
 	call <sid>ShowMarks()
